@@ -43,6 +43,25 @@ describe('Board.vue', () => {
     see('author3', '.post:nth-child(3)')
   })
 
+  it('should have a thumbnail in post', () => {
+    wrapper.setData({
+      posts: [
+        { title: 'the title.',  author: 'author1', thumbnail: 'sample.jpg'},
+      ]
+    })
+
+    expect(wrapper.find('.post .thumbnail').element.src).toEqual("sample.jpg");
+  })
+
+  it('should have a placeholder if post has no thumber', () => {
+    wrapper.setData({
+      posts: [
+        { title: 'the title.',  author: 'author1', thumbnail: ''},
+      ]
+    })
+    expect(wrapper.find('.post .thumbnail').element.src).toEqual("placeholder.jpg");
+  })
+
   let see = (content, selector) => {
     let wrap = selector ? wrapper.find(selector) : wrapper;
 
