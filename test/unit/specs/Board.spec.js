@@ -2,41 +2,29 @@ import { mount } from 'vue-test-utils'
 import Board from '@/components/Board'
 
 describe('Board.vue', () => {
-  let wrapper
+  let wrapper, posts = [
+    {title: 'the title.', author: 'author1', thumbnail: 'sample.jpg'},
+    {title: 'the title2.', author: 'author2', thumbnail: ''},
+    {title: 'the title3.', author: 'author3', thumbnail: ''},
+  ]
 
   beforeEach(() => {
-    wrapper = mount(Board)
+    wrapper = mount(Board, {
+      data: { posts }
+    })
   })
 
   it('should have a name', () => {
-    expect(wrapper.name()).toEqual('board')
+    name('board')
   })
 
   it('should have a post title and author', () => {
-    wrapper.setData({
-      posts: [
-        {
-          title: 'the title.',
-          author: 'author1'
-        }
-      ]
-    })
-
     see('the title.', '.post')
     see('author1', '.post')
   })
 
   it('should have a lot of posts', () => {
-    wrapper.setData({
-      posts: [
-        { title: 'the title.',  author: 'author1'},
-        { title: 'the title2.',  author: 'author2'},
-        { title: 'the title3.',  author: 'author3'},
-      ]
-    })
 
-    see('the title.', '.post')
-    see('author1', '.post')
     see('the title2.', '.post:nth-child(2)')
     see('author2', '.post:nth-child(2)')
     see('the title3.', '.post:nth-child(3)')
@@ -44,26 +32,48 @@ describe('Board.vue', () => {
   })
 
   it('should have a thumbnail in post', () => {
-    wrapper.setData({
-      posts: [
-        { title: 'the title.',  author: 'author1', thumbnail: 'sample.jpg'},
-      ]
-    })
-
-    expect(wrapper.find('.post .thumbnail').element.src).toEqual("sample.jpg");
+    picture('sample.jpg', '.post .thumbnail')
   })
 
-  it('should have a placeholder if post has no thumber', () => {
-    wrapper.setData({
-      posts: [
-        { title: 'the title.',  author: 'author1', thumbnail: ''},
-      ]
-    })
-    expect(wrapper.find('.post .thumbnail').element.src).toEqual("placeholder.jpg");
+  it('should have a placeholder if post has no thumbnail', () => {
+    picture('placeholder.jpg', '.post:nth-child(2) .thumbnail')
   })
+
+  it('should display content when click show button', () => {
+    let postContent = '.post .content'
+    let showButton = '.post .show-btn'
+
+    notContain(postContent)
+    click(showButton)
+    contain(postContent)
+    click(showButton)
+    notContain(postContent)
+  })
+
+  let click = (selector) => {
+    wrapper.find(selector).trigger('click')
+  }
+
+  let contain = (selector) => {
+    expect(wrapper.contains(selector)).toBe(true);
+  }
+
+  let notContain = (selector) => {
+    expect(wrapper.contains(selector)).toBe(false);
+  }
+
+  let picture = (name, selector) => {
+    let wrap = selector ? wrapper.find(selector) : wrapper
+
+    expect(wrap.element.src).toContain(name)
+  }
+
+  let name = (name) => {
+    expect(wrapper.name()).toEqual(name)
+  }
 
   let see = (content, selector) => {
-    let wrap = selector ? wrapper.find(selector) : wrapper;
+    let wrap = selector ? wrapper.find(selector) : wrapper
 
     expect(wrap.html()).toContain(content)
   }

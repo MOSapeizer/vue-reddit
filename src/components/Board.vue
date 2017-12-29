@@ -5,6 +5,8 @@
       <span>{{ post.author }}</span>
       <img v-if="post.thumbnail" :src="post.thumbnail" alt="" class="thumbnail">
       <img v-else src="placeholder.jpg" alt="" class="thumbnail">
+      <button @click="showContent = !showContent" class="show-btn"></button>
+      <p v-if="showContent" class="content"></p>
     </div>
   </div>
 </template>
