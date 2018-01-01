@@ -3,14 +3,14 @@ import Board from '@/components/Board'
 
 describe('Board.vue', () => {
   let wrapper, posts = [
-    {title: 'the title.', author: 'author1', thumbnail: 'sample.jpg'},
-    {title: 'the title2.', author: 'author2', thumbnail: ''},
-    {title: 'the title3.', author: 'author3', thumbnail: ''},
+    {title: 'the title.', author: 'author1', thumbnail: 'sample.jpg', show: false, content: ''},
+    {title: 'the title2.', author: 'author2', thumbnail: '', show: false, content: "sample.jpg"},
+    {title: 'the title3.', author: 'author3', thumbnail: '', show: false, content: "fuck"},
   ]
 
   beforeEach(() => {
     wrapper = mount(Board, {
-      data: { posts }
+      data: { posts, placeHolder: "placeholder.jpg" }
     })
   })
 
@@ -36,18 +36,54 @@ describe('Board.vue', () => {
   })
 
   it('should have a placeholder if post has no thumbnail', () => {
-    picture('placeholder.jpg', '.post:nth-child(2) .thumbnail')
+    picture('placeholder.png', '.post:nth-child(2) .thumbnail')
   })
 
-  it('should display content when click show button', () => {
-    let postContent = '.post .content'
-    let showButton = '.post .show-btn'
+  // it('should display content when click show button', () => {
+  //   let postContent = '.post .content'
+  //   let showButton = '.post .show-btn'
+  //
+  //   notContain(postContent)
+  //   see(posts[0].content)
+  //   cannotSee()
+  //   click(showButton)
+  //   contain(postContent)
+  //   click(showButton)
+  //   notContain(postContent)
+  // })
 
-    notContain(postContent)
-    click(showButton)
-    contain(postContent)
-    click(showButton)
-    notContain(postContent)
+  it('如果無法快速查看，不顯示按鈕', () => {
+    let showButton = '.post:first-child .show-btn'
+    let postContent = '.post:first-child .content'
+
+    notContain( showButton )
+    notContain( postContent )
+  })
+
+  it('如果有快速查看按鈕，點擊後可以開關查看的內容', () => {
+    let showButton = '.post:nth-child(2) .show-btn'
+    let postContent = '.post:nth-child(2) .content'
+    let anotherPostContent = '.post:nth-child(3) .content'
+
+    contain( showButton )
+    notContain( postContent )
+    notContain( anotherPostContent )
+
+    click( showButton )
+    contain( postContent )
+    see( posts[1].content, postContent)
+
+    notContain( anotherPostContent )
+  })
+
+  it('只有點擊查看按鈕的文章，會顯示文章內容', () => {
+    let showButton = '.post:nth-child(2) .show-btn'
+    let postContent = '.post:nth-child(2) .content'
+    let anotherPostContent = '.post:nth-child(3) .content'
+
+    notContain( anotherPostContent )
+    click( showButton )
+    notContain( anotherPostContent )
   })
 
   let click = (selector) => {
@@ -76,5 +112,11 @@ describe('Board.vue', () => {
     let wrap = selector ? wrapper.find(selector) : wrapper
 
     expect(wrap.html()).toContain(content)
+  }
+
+  let cannotSee = (content, selector) => {
+    let wrap = selector ? wrapper.find(selector) : wrapper
+
+    expect(wrap.html()).not.toContain(content)
   }
 })
