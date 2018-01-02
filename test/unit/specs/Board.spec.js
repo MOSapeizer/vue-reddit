@@ -32,25 +32,12 @@ describe('Board.vue', () => {
   })
 
   it('should have a thumbnail in post', () => {
-    picture('sample.jpg', '.post .thumbnail')
+    picture(posts[0].thumbnail, '.post .thumbnail')
   })
 
   it('should have a placeholder if post has no thumbnail', () => {
     picture('placeholder.png', '.post:nth-child(2) .thumbnail')
   })
-
-  // it('should display content when click show button', () => {
-  //   let postContent = '.post .content'
-  //   let showButton = '.post .show-btn'
-  //
-  //   notContain(postContent)
-  //   see(posts[0].content)
-  //   cannotSee()
-  //   click(showButton)
-  //   contain(postContent)
-  //   click(showButton)
-  //   notContain(postContent)
-  // })
 
   it('如果無法快速查看，不顯示按鈕', () => {
     let showButton = '.post:first-child .show-btn'
@@ -78,12 +65,19 @@ describe('Board.vue', () => {
 
   it('只有點擊查看按鈕的文章，會顯示文章內容', () => {
     let showButton = '.post:nth-child(2) .show-btn'
-    let postContent = '.post:nth-child(2) .content'
     let anotherPostContent = '.post:nth-child(3) .content'
 
     notContain( anotherPostContent )
     click( showButton )
     notContain( anotherPostContent )
+  })
+
+  it('內容如果是圖片連結，要顯示圖片', () => {
+    let showButton = '.post:nth-child(2) .show-btn'
+    let postContent = '.post:nth-child(2) .content'
+
+    click( showButton )
+    picture(posts[1].content, `${postContent} img`)
   })
 
   let click = (selector) => {

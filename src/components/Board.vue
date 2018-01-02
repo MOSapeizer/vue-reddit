@@ -12,7 +12,8 @@
           </button>
           <span>{{ post.author }}</span>
           <p v-if="post.content && post.show" class="mt-2 content">
-            {{ post.content }}
+            <img class="img-fluid" v-if="isImage(post.content)" :src="post.content" alt="" style="width: 100%;">
+            <span v-else v-text="post.content"></span>
           </p>
         </div>
       </div>
@@ -28,6 +29,9 @@
     methods: {
       getThumbnail (post) {
         return post.thumbnail || placeHolder
+      },
+      isImage: function (content) {
+        return content.match(/\.(jpeg|jpg|gif|png)$/) != null
       }
     },
     data () {
@@ -35,11 +39,11 @@
         placeHolder,
         posts: [
           {id: 1, title: 'the title.', author: 'author1', thumbnail: '', show: false, content: ''},
-          {id: 2, title: 'the title2.', author: 'author2', thumbnail: '', show: false, content: 'fuck'},
-          {id: 3, title: 'the title3.', author: 'author3', thumbnail: '', show: false, content: 'sample.jpg'}
+          {id: 2, title: 'the title2.', author: 'author2', thumbnail: '', show: false, content: '黑人問號'},
+          {id: 3, title: 'the title3.', author: 'author3', thumbnail: '', show: false, content: 'https://vignette.wikia.nocookie.net/evchk/images/e/ec/2471912.jpg'}
         ]
       }
-    }
+    },
   }
 </script>
 
