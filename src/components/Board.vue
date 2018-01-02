@@ -43,7 +43,7 @@
           {id: 3, title: 'the title3.', author: 'author3', thumbnail: '', show: false, content: 'https://vignette.wikia.nocookie.net/evchk/images/e/ec/2471912.jpg'}
         ]
       }
-    },
+    }
   }
 </script>
 

@@ -80,6 +80,18 @@ describe('Board.vue', () => {
     picture(posts[1].content, `${postContent} img`)
   })
 
+  it('要有推文的區塊', () => {
+
+  })
+
+  it('推、噓文只能二選一', () => {
+
+  })
+
+  it('按推噓文按鈕，要顯示對應顏色', () => {
+
+  })
+
   let click = (selector) => {
     wrapper.find(selector).trigger('click')
   }
