@@ -1,0 +1,18 @@
+{
+  "posts": [
+    {
+      "createdAt": 1514954629893,
+      "thumbnail": "",
+      "author": "wretch",
+      "id": 1
+    },
+    {
+      "createdAt": 1514954720182,
+      "author": "wretch",
+      "title": "missing title",
+      "content": "",
+      "thumbnail": "",
+      "id": 2
+    }
+  ]
+}
